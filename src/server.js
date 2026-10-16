@@ -21,12 +21,14 @@ const __dirname = path.dirname(__filename);
 const PgSession = connectPgSimple(session);
 const PORT = Number(process.env.PORT || 3000);
 const isProduction = process.env.NODE_ENV === 'production';
-if (isProduction && (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32)) {
+const isVercel = Boolean(process.env.VERCEL);
+const isSecureDeployment = isProduction || isVercel;
+if (isSecureDeployment && (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32)) {
   throw new Error('SESSION_SECRET must be set to at least 32 random characters in production.');
 }
 
 app.disable('x-powered-by');
-app.set('trust proxy', isProduction ? 1 : false);
+app.set('trust proxy', isSecureDeployment ? 1 : false);
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
@@ -55,7 +57,7 @@ app.use(session({
   rolling: true,
   cookie: {
     httpOnly: true,
-    secure: process.env.COOKIE_SECURE === 'true' || isProduction,
+    secure: process.env.COOKIE_SECURE === 'true' || isSecureDeployment,
     sameSite: 'lax',
     maxAge: 8 * 60 * 60 * 1000
   }

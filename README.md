@@ -172,6 +172,8 @@ This repository includes a Vercel function entry point at `api/index.js`. Vercel
 
 Vercel does not provide a persistent local PostgreSQL service. Use managed PostgreSQL with persistent storage and backups. Server-side sessions are stored in PostgreSQL, so do not remove the database or change `SESSION_SECRET` during normal operation; changing the secret signs active sessions out.
 
+The app trusts one proxy hop when running on Vercel so Express can use Vercel's forwarded client IP for login rate limiting and issue secure session cookies. Keep `DATABASE_URL` set to the managed database's connection string; `127.0.0.1` and `localhost` refer to the function container, not your development computer or hosted database.
+
 ### External services and costs
 
 Required services are Node.js hosting and PostgreSQL. They may be combined or supplied separately. No SMS, email, calendar-provider, or patient-system integration is needed by the included code. Optional future services could add SMS/email notifications or an authorized PPEC patient API integration. Provider prices vary by region, usage and plan; this project has no fixed vendor fee or provider account configured. Avoid choosing a plan without checking database backups, persistent storage, TLS, logs, and support expectations.
