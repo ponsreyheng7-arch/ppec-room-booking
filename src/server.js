@@ -818,6 +818,25 @@ app.get('/api/reports/summary', requireAdmin, asyncRoute(async (req, res) => {
   res.json({ from,to,byDoctor:byDoctor.rows,byType:byType.rows,totals:totals.rows[0] });
 }));
 
+// app.use('/api', (err, _req, res, _next) => {
+//   console.error(err);
+//   if (err.code === '23P01' || err.code === '23505') return res.status(409).json({ error: 'CONFLICT', message: 'This request conflicts with existing data. Refresh and try again.' });
+//   if (err.code === '23503') return res.status(400).json({ message: 'The selected record is not valid.' });
+//   const status = Number(err.status) || 500;
+//   res.status(status).json({ error: err.code || 'SERVER_ERROR', message: status >= 500 ? 'An unexpected server error occurred. Contact the administrator if it continues.' : err.message });
+// });
+
+// app.use(express.static(path.join(__dirname, '..', 'public'), { extensions: ['html'] }));
+// app.get('*', (_req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'index.html')));
+
+// const server = app.listen(PORT, () => console.log(`PPEC Operating Room Platform listening on port ${PORT}`));
+// async function shutdown(signal) {
+//   console.log(`${signal} received. Shutting down gracefully.`);
+//   server.close(async () => { await pool.end(); process.exit(0); });
+//   setTimeout(() => process.exit(1), 10000).unref();
+// }
+// process.on('SIGTERM', () => shutdown('SIGTERM'));
+// process.on('SIGINT', () => shutdown('SIGINT'));
 app.use('/api', (err, _req, res, _next) => {
   console.error(err);
   if (err.code === '23P01' || err.code === '23505') return res.status(409).json({ error: 'CONFLICT', message: 'This request conflicts with existing data. Refresh and try again.' });
