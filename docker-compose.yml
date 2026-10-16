@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ppec_or_booking
+      POSTGRES_USER: ppec_user
+      POSTGRES_PASSWORD: ppec_dev_local_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ppec_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ppec_user -d ppec_or_booking"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+volumes:
+  ppec_postgres_data:

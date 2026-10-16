@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b6b62">
+  <title>PPEC | Operating Room Booking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="auth-screen" class="auth-screen">
+    <div class="auth-visual">
+      <div class="auth-brand"><span class="brand-mark">P</span><span><strong>PPEC</strong><small>PHNOM PENH EYE CLINIC</small></span></div>
+      <div class="auth-message">
+        <span class="eyebrow light">OPERATING ROOM OPERATIONS</span>
+        <h1>Better coordination.<br><em>Safer surgery days.</em></h1>
+        <p>One trusted place to coordinate operating room availability, surgeon bookings and payment records.</p>
+      </div>
+      <div class="auth-foot"><span class="status-dot"></span> Built for PPEC teams and approved surgeons <span class="auth-foot-sep">·</span> Cambodia time (ICT)</div>
+      <div class="auth-orbit orbit-one"></div><div class="auth-orbit orbit-two"></div>
+    </div>
+    <div class="auth-panel">
+      <div class="auth-mobile-brand"><span class="brand-mark">P</span><span><strong>PPEC</strong><small>PHNOM PENH EYE CLINIC</small></span></div>
+      <div class="auth-card">
+        <div class="eyebrow">WELCOME BACK</div>
+        <h2>Sign in to PPEC</h2>
+        <p class="muted">Use the phone number registered by your administrator.</p>
+        <form id="login-form" class="stack-form">
+          <label>Registered phone number<input name="phone" type="tel" autocomplete="username" placeholder="e.g. 855 12 345 678" required></label>
+          <label>Password<div class="password-input"><input name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required><button type="button" class="text-button" id="toggle-password">Show</button></div></label>
+          <div id="login-error" class="form-error hidden" role="alert"></div>
+          <button class="button primary full" type="submit">Sign in <span aria-hidden="true">→</span></button>
+        </form>
+        <div class="auth-divider"><span>OR</span></div>
+        <button class="button secondary full" id="preview-button" type="button"><span class="preview-dot"></span> Explore demo preview</button>
+        <p class="demo-note"><strong>Demo only.</strong> Preview uses fictional records. Changes are not saved and no real patient data is shown.</p>
+      </div>
+      <div class="auth-help">Need access? Contact the PPEC system administrator.</div>
+    </div>
+  </div>
+
+  <div id="password-screen" class="password-screen hidden">
+    <div class="password-card">
+      <div class="brand-row"><span class="brand-mark">P</span><span><strong>PPEC</strong><small>ACCOUNT SECURITY</small></span></div>
+      <span class="eyebrow">ONE-TIME SETUP</span>
+      <h2>Create your personal password</h2>
+      <p class="muted">Your temporary password can only be used for this first sign-in. Choose at least 12 characters and include letters and numbers.</p>
+      <form id="password-form" class="stack-form">
+        <label>Current / temporary password<input name="oldPassword" type="password" autocomplete="current-password" required></label>
+        <label>New password<input name="newPassword" type="password" autocomplete="new-password" minlength="12" required></label>
+        <label>Confirm new password<input name="confirmPassword" type="password" autocomplete="new-password" minlength="12" required></label>
+        <div id="password-error" class="form-error hidden" role="alert"></div>
+        <button class="button primary full" type="submit">Save new password</button>
+      </form>
+      <button id="password-logout" class="text-button" type="button">Sign out instead</button>
+    </div>
+  </div>
+
+  <div id="application" class="application hidden">
+    <aside id="sidebar" class="sidebar">
+      <div class="side-brand"><span class="brand-mark">P</span><span><strong>PPEC</strong><small>OPERATIONS SUITE</small></span><button class="icon-button sidebar-close" id="sidebar-close" aria-label="Close menu">×</button></div>
+      <div class="workspace-label">WORKSPACE <span class="tiny-chevron">⌄</span></div>
+      <div class="workspace-chip"><span class="workspace-icon">◉</span><span><strong>Phnom Penh Eye Clinic</strong><small>Operating rooms</small></span><span class="workspace-caret">⌄</span></div>
+      <nav id="main-navigation" class="main-navigation" aria-label="Main navigation"></nav>
+      <div class="sidebar-bottom">
+        <div class="help-card"><div class="help-icon">✳</div><strong>Need a hand?</strong><p>Reach your PPEC system administrator for booking or account support.</p></div>
+        <div class="sidebar-user"><div id="user-avatar" class="avatar">AD</div><div class="user-identity"><strong id="side-user-name">Administrator</strong><small id="side-user-role">System administrator</small></div><button class="icon-button" id="sidebar-logout" aria-label="Sign out">↗</button></div>
+      </div>
+    </aside>
+    <div id="mobile-overlay" class="mobile-overlay"></div>
+    <main class="main-area">
+      <header class="topbar">
+        <div class="top-left"><button class="icon-button mobile-menu" id="mobile-menu" aria-label="Open menu">☰</button><div class="breadcrumbs"><span>Workspace</span><span class="crumb-sep">/</span><strong id="current-page-label">Dashboard</strong></div></div>
+        <div class="top-actions"><div class="time-chip"><span class="live-dot"></span><span id="current-time">Cambodia time · ICT</span></div><div class="top-avatar" id="top-avatar">AD</div><button class="top-user" id="top-user-menu"><strong id="top-user-name">Admin</strong><small id="top-user-role">Administrator</small></button></div>
+      </header>
+      <div class="main-scroll"><div id="page-content" class="page-content"></div><footer class="app-footer"><span>© <span id="footer-year"></span> Phnom Penh Eye Clinic</span><span><span class="footer-dot"></span> PPEC Operating Room Platform <span class="footer-version">v1.0</span></span></footer></div>
+    </main>
+    <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+    <div id="modal-root"></div>
+  </div>
+  <script src="app.js" defer></script>
+</body>
+</html>
