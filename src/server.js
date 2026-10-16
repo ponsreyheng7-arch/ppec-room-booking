@@ -21,11 +21,6 @@ const __dirname = path.dirname(__filename);
 const PgSession = connectPgSimple(session);
 const PORT = Number(process.env.PORT || 3000);
 const isProduction = process.env.NODE_ENV === 'production';
-const express = require('express');
-const app = express();
-
-// ដាក់នៅត្រង់នេះ
-app.set('trust proxy', 1);
 if (isProduction && (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32)) {
   throw new Error('SESSION_SECRET must be set to at least 32 random characters in production.');
 }
