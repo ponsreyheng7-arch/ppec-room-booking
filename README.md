@@ -157,6 +157,21 @@ A typical low-maintenance deployment uses a managed PostgreSQL service plus one 
 5. Attach a clinic-controlled domain and enable HTTPS. Confirm the service terminates TLS correctly; do not enable production without it.
 6. Verify `/api/health`, sign in, change the password if prompted, run booking-conflict tests in a staging database, verify doctor privacy, test payments/exports, and perform a backup restoration drill.
 
+### Deploying to Vercel
+
+This repository includes a Vercel function entry point at `api/index.js`. Vercel runs the Express app as a serverless function; local development continues to start the HTTP listener with `npm start`.
+
+1. Import the GitHub repository into Vercel. Keep the project root set to the repository root and use the Node.js runtime.
+2. Add these server-side environment variables for the Production environment (and Preview if you use preview deployments):
+   - `DATABASE_URL`: a connection string for a managed PostgreSQL database reachable from Vercel. A local `localhost` database URL will not work.
+   - `SESSION_SECRET`: a unique random secret with at least 32 characters.
+   - `NODE_ENV=production`.
+   - `SSL_MODE=require` if the database provider requires TLS. Do not set `COOKIE_SECURE=false` for an HTTPS deployment.
+3. Apply the schema to the managed database once from a trusted machine or deployment shell using `npm run db:migrate` with that database's `DATABASE_URL`. Create the initial admin once with `npm run admin:create` and secure `INITIAL_ADMIN_NAME`, `INITIAL_ADMIN_PHONE`, and `INITIAL_ADMIN_PASSWORD` values. Do not commit these values or store them in client-side variables.
+4. Deploy, then verify `https://<your-domain>/api/health` reports `database: connected`. Sign in and test the dashboard and other protected pages.
+
+Vercel does not provide a persistent local PostgreSQL service. Use managed PostgreSQL with persistent storage and backups. Server-side sessions are stored in PostgreSQL, so do not remove the database or change `SESSION_SECRET` during normal operation; changing the secret signs active sessions out.
+
 ### External services and costs
 
 Required services are Node.js hosting and PostgreSQL. They may be combined or supplied separately. No SMS, email, calendar-provider, or patient-system integration is needed by the included code. Optional future services could add SMS/email notifications or an authorized PPEC patient API integration. Provider prices vary by region, usage and plan; this project has no fixed vendor fee or provider account configured. Avoid choosing a plan without checking database backups, persistent storage, TLS, logs, and support expectations.

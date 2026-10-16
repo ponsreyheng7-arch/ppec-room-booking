@@ -16,11 +16,10 @@ import { writeAudit, asyncRoute, requireAdmin, requirePasswordReady, safeUserRow
 
 globalThis.__ppecDomainForCsv = { csvEscape };
 const app = express(); 
-app.set('trust proxy', 1); // ដាក់ពីក្រោម const app = express(); ភ្លាម
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PgSession = connectPgSimple(session);
-const PORT = Number(process.env.PORT || 3000);// ត្រូវប្រាកដថាមានបន្ទាត់នេះនៅពីលើគេ
+const PORT = Number(process.env.PORT || 3000);
 const isProduction = process.env.NODE_ENV === 'production';
 if (isProduction && (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32)) {
   throw new Error('SESSION_SECRET must be set to at least 32 random characters in production.');
@@ -849,11 +848,15 @@ app.use('/api', (err, _req, res, _next) => {
 app.use(express.static(path.join(__dirname, '..', 'public'), { extensions: ['html'] }));
 app.get('*', (_req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'index.html')));
 
-const server = app.listen(PORT, () => console.log(`PPEC Operating Room Platform listening on port ${PORT}`));
-async function shutdown(signal) {
-  console.log(`${signal} received. Shutting down gracefully.`);
-  server.close(async () => { await pool.end(); process.exit(0); });
-  setTimeout(() => process.exit(1), 10000).unref();
+export { app };
+
+if (!process.env.VERCEL) {
+  const server = app.listen(PORT, () => console.log(`PPEC Operating Room Platform listening on port ${PORT}`));
+  async function shutdown(signal) {
+    console.log(`${signal} received. Shutting down gracefully.`);
+    server.close(async () => { await pool.end(); process.exit(0); });
+    setTimeout(() => process.exit(1), 10000).unref();
+  }
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
+  process.on('SIGINT', () => shutdown('SIGINT'));
 }
-process.on('SIGTERM', () => shutdown('SIGTERM'));
-process.on('SIGINT', () => shutdown('SIGINT'));
