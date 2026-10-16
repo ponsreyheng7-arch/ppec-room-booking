@@ -1,4 +1,3 @@
-
 import 'dotenv/config';
 import express from 'express';
 import helmet from 'helmet';
@@ -16,10 +15,11 @@ import {
 import { writeAudit, asyncRoute, requireAdmin, requirePasswordReady, safeUserRow, csvResponse } from './security.js';
 
 globalThis.__ppecDomainForCsv = { csvEscape };
+const app = express(); 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PgSession = connectPgSimple(session);
-const PORT = Number(process.env.PORT || 3000);
+const PORT = Number(process.env.PORT || 3000);// ត្រូវប្រាកដថាមានបន្ទាត់នេះនៅពីលើគេ
 const isProduction = process.env.NODE_ENV === 'production';
 if (isProduction && (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32)) {
   throw new Error('SESSION_SECRET must be set to at least 32 random characters in production.');
