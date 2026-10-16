@@ -16,6 +16,7 @@ import { writeAudit, asyncRoute, requireAdmin, requirePasswordReady, safeUserRow
 
 globalThis.__ppecDomainForCsv = { csvEscape };
 const app = express(); 
+app.set('trust proxy', 1); // ដាក់ពីក្រោម const app = express(); ភ្លាម
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PgSession = connectPgSimple(session);
